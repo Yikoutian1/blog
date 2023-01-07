@@ -1,5 +1,7 @@
 package com.project.blog.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -10,7 +12,9 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
+@ApiModel(value = "UserModel",description = "USerModel")
 public class User {
+    @ApiModelProperty("主键")
     private Integer id;
     private String username;
     private String password;
