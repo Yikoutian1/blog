@@ -23,9 +23,12 @@ import java.util.List;
 
 public class AutoGenerator {
 
+    /**
+     * 本地数据库信息
+     */
     private static final String URL = "jdbc:mysql://localhost:3306/blog?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "1qiulihang";
 
     public static void main(String[] args) {
         List<String> tables = new ArrayList<>();
@@ -34,8 +37,8 @@ public class AutoGenerator {
 
         FastAutoGenerator.create(URL, USERNAME, PASSWORD)
                 .globalConfig(builder -> {
-                    builder.author("代码奔腾")               //作者
-                            .outputDir(System.getProperty("user.dir") + "\\src\\main\\java")    //输出路径(写到java目录)
+                    builder.author("Qiulihang")               //作者
+                            .outputDir(System.getProperty("user.dir") + "\\blog\\src\\main\\java")    //输出路径(写到java目录)
                             .enableSwagger()           //开启swagger
                             .commentDate("yyyy-MM-dd")
                             .fileOverride();            //开启覆盖之前生成的文件
@@ -51,11 +54,14 @@ public class AutoGenerator {
                             .controller("controller")
                             .mapper("mapper")
                             .xml("mapper")
-                            .pathInfo(Collections.singletonMap(OutputFile.mapper, System.getProperty("user.dir") + "\\src\\main\\resources\\mapper"));
+                            .pathInfo(Collections.singletonMap(OutputFile.mapper, System.getProperty("user.dir") + "\\blog\\src\\main\\resources\\mapper"));
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude(tables)
 //                            .addTablePrefix("p_")
+                            /**
+                             * %s ：占位符   xxService
+                             */
                             .serviceBuilder()
                             .formatServiceFileName("%sService")
                             .formatServiceImplFileName("%sServiceImpl")
