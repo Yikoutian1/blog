@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class BaseController {
+    /**
+     * 在基类中注入
+     */
     @Autowired
     UserServiceImpl userService;
 

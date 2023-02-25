@@ -11,6 +11,8 @@ import lombok.Data;
  */
 @Data
 public class UserQuery extends PageInfo{
-
+    /**
+     * 用户名
+     */
     private String username;
 }

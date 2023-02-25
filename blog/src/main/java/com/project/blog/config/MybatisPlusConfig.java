@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan("com.project.blog")
 public class MybatisPlusConfig {
-    //https://baomidou.com/pages/512599/
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();

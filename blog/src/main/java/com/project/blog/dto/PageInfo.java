@@ -11,6 +11,9 @@ import lombok.Data;
  */
 @Data
 public class PageInfo {
+    /**
+     * 分页信息
+     */
     private Integer pageNum;
     private Integer pageSize;
 }

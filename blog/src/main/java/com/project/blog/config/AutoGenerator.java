@@ -37,7 +37,7 @@ public class AutoGenerator {
 
         FastAutoGenerator.create(URL, USERNAME, PASSWORD)
                 .globalConfig(builder -> {
-                    builder.author("Qiulihang")               //作者
+                    builder.author("Despacito")               //作者
                             .outputDir(System.getProperty("user.dir") + "\\blog\\src\\main\\java")    //输出路径(写到java目录)
                             .enableSwagger()           //开启swagger
                             .commentDate("yyyy-MM-dd")
