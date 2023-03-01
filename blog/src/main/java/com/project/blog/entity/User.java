@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -22,6 +23,7 @@ public class User extends BaseEntity {
 
     @ApiModelProperty("用户名")
     @TableField("username")
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
     @ApiModelProperty("密码")

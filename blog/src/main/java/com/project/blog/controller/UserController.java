@@ -6,6 +6,7 @@ import com.project.blog.common.Result;
 import com.project.blog.dto.UserQuery;
 import com.project.blog.entity.User;
 import io.micrometer.common.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.project.blog.controller.BaseController;
 
@@ -37,7 +38,7 @@ public class UserController extends BaseController {
      * @return
      */
     @PostMapping("/page")
-    public Result<?> findPage(/*@RequestBody*/ UserQuery userQuery){
+    public Result<?> findPage(@RequestBody UserQuery userQuery){
         LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
         /**
          * 通过ID降序排列
@@ -71,7 +72,7 @@ public class UserController extends BaseController {
      * @return
      */
     @PostMapping("/save")
-    public Object save(@RequestBody User user){
+    public Object save(@Validated @RequestBody User user){
         userService.saveOrUpdate(user);
         return Result.success();
     }

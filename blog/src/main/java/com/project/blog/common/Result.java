@@ -35,4 +35,7 @@ public class Result<T> {
     public static Result<?> error(){
         return new Result<>(500,"系统错误,请联系管理员!",null);
     }
+    public static Result<?> error(String msg){
+        return new Result<>(500,msg,null);
+    }
 }

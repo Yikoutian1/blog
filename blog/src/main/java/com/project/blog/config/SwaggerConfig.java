@@ -18,38 +18,38 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @DATE 2023/1/7 21:33
  * @Version 1.0
  */
-@EnableSwagger2
-@Configuration
-public class SwaggerConfig {
-
-    /**
-     * 创建API
-     */
-    @Bean
-    public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
-                .apiInfo(apiInfo())
-                // 设置哪些接口暴露给Swagger展示
-                .select()
-                // 扫描所有有注解的api，用这种方式更灵活
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                // 扫描所有 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    /**
-     * 添加摘要信息
-     */
-    private ApiInfo apiInfo()
-    {
-        // 用ApiInfoBuilder进行定制
-        return new ApiInfoBuilder()
-                // 设置标题
-                .title("Qiu")
-                .description("Qiu")
-                .version("1.0")
-                .build();
-    }
-}
+//@EnableSwagger2
+//@Configuration
+//public class SwaggerConfig {
+//
+//    /**
+//     * 创建API
+//     */
+//    @Bean
+//    public Docket createRestApi() {
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                // 用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
+//                .apiInfo(apiInfo())
+//                // 设置哪些接口暴露给Swagger展示
+//                .select()
+//                // 扫描所有有注解的api，用这种方式更灵活
+//                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+//                // 扫描所有 .apis(RequestHandlerSelectors.any())
+//                .paths(PathSelectors.any())
+//                .build();
+//    }
+//
+//    /**
+//     * 添加摘要信息
+//     */
+//    private ApiInfo apiInfo()
+//    {
+//        // 用ApiInfoBuilder进行定制
+//        return new ApiInfoBuilder()
+//                // 设置标题
+//                .title("Qiu")
+//                .description("Qiu")
+//                .version("1.0")
+//                .build();
+//    }
+//}
