@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @ClassName AutoGenerator
- * @Description TODO
+ * @Description 自动生成器
  * @Author QiuLiHang
  * @DATE 2023/1/12 21:31
  * @Version 1.0
@@ -32,7 +32,9 @@ public class AutoGenerator {
 
     public static void main(String[] args) {
         List<String> tables = new ArrayList<>();
-        tables.add("user");
+        // tables.add("user");
+        tables.add("category");
+        tables.add("article");
 
 
         FastAutoGenerator.create(URL, USERNAME, PASSWORD)

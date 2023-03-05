@@ -1,5 +1,8 @@
 package com.project.blog.controller;
 
+import com.project.blog.entity.Article;
+import com.project.blog.serviceImpl.ArticleServiceImpl;
+import com.project.blog.serviceImpl.CategoryServiceImpl;
 import com.project.blog.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,5 +22,9 @@ public class BaseController {
      */
     @Autowired
     UserServiceImpl userService;
+    @Autowired
+    ArticleServiceImpl articleService;
+    @Autowired
+    CategoryServiceImpl categoryService;
 
 }

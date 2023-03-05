@@ -2,6 +2,7 @@ package com.project.blog.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.project.blog.enums.RoleType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -50,9 +51,9 @@ public class User extends BaseEntity {
     @TableField("avatar_url")
     private String avatarUrl;
 
-//    @ApiModelProperty("角色类型")
-//    @TableField("role_type")
-//    private RoleType roleType;
+    @ApiModelProperty("角色类型")
+    @TableField("role_type")
+    private RoleType roleType;
 
     @ApiModelProperty("文章总浏览量")
     @TableField("views")
