@@ -1,38 +1,35 @@
 package com.project.blog.utils;
 
-
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.Claims;
 import com.project.blog.entity.User;
-import com.project.blog.service.UserService;
+import com.project.blog.serviceImpl.UserServiceImpl;
+
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @ClassName JWT
- * @Description TODO
- * @Author QiuLiHang
- * @DATE 2023/3/5 19:19
- * @Version 1.0
- */
 @Slf4j
+@Component
 public class JwtUtils {
 
-    @Resource
-    private static UserService userService;
+    @Autowired
+    private static UserServiceImpl userService;
+
 
     /**
      * token 过期时间, 单位: 秒. 这个值表示 30 天
@@ -44,7 +41,7 @@ public class JwtUtils {
     /**
      * jwt 加密解密密钥(可自行填写)
      */
-    private static final String JWT_SECRET = "599882460";
+    private static final String JWT_SECRET = "1234567890";
 
     /**
      * 创建JWT
@@ -121,7 +118,7 @@ public class JwtUtils {
      *
      * @return user对象
      */
-    public static User getCurrentUserInfo() {
+    public static Integer getCurrentUserInfo() {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String token = request.getHeader("token");
@@ -130,8 +127,9 @@ public class JwtUtils {
 
                 Claims claims = verifyJwt(token);
                 if (claims != null) {
-                    String userId = (String) claims.getClaim("id");
-                    return userService.getById(userId);
+                    Integer userId = (Integer) claims.getClaim("userId");
+
+                    return userId;
                 } else {
                     return null;
                 }

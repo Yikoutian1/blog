@@ -1,10 +1,13 @@
 package com.project.blog.controller;
 
+import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.project.blog.common.Result;
 import com.project.blog.dto.UserQuery;
 import com.project.blog.entity.User;
+import com.project.blog.enums.RoleType;
+import com.project.blog.exception.CustomException;
 import com.project.blog.utils.JwtUtils;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +32,7 @@ public class UserController extends BaseController {
      * list
      * @return
      */
-    @GetMapping("/list")
+    @GetMapping("/")
     public List<User> list(){
         return userService.list();
     }
@@ -74,9 +77,33 @@ public class UserController extends BaseController {
      * @return
      */
     @PostMapping("/save")
-    public Object save(@Validated @RequestBody User user){
-        userService.saveOrUpdate(user);
-        return Result.success();
+    public Object save(@Validated @RequestBody User user) {
+
+        Integer userId = JwtUtils.getCurrentUserInfo();
+        if (userId != null) {
+
+            //普通用户
+            if (RoleType.ROLE_USER.equals(user.getRoleType())) {
+                if (!user.getId().equals(userId)) {
+                    throw new CustomException("用户ID不相等，请重新登录后尝试");
+                }
+            }
+            User userInfo = userService.getById(userId);
+
+            if(userInfo != null) {
+                //超级管理员
+                if (RoleType.ROLE_ADMIN.equals(user.getRoleType()) && user.getRoleType().equals(userInfo.getRoleType())) {
+                    userService.saveOrUpdate(user);
+                }else{
+                    throw new CustomException("用户权限与数据库不一致");
+                }
+            }else {
+                throw new CustomException("用户未找到");
+            }
+
+            return Result.success();
+        }
+        return Result.error();
     }
 
     /**
@@ -98,30 +125,34 @@ public class UserController extends BaseController {
             @RequestParam("username") String username,
             @RequestParam("password") String password){
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-
-        wrapper.eq(User::getUsername,username)
-                .eq(User::getPassword,password)
-                // 表示查询的只有sql一条数据,因为在查询的时候也许会有多条语句,如果有多条则会出现错误
+        //md5(password+salt) = 数据库存的password值
+        //通过用户名查询用户
+        wrapper.eq(User::getUsername, username)
                 .last("limit 1");
+                // 表示查询的只有sql一条数据,因为在查询的时候也许会有多条语句,如果有多条则会出现错误
         User userInfo = userService.getOne(wrapper);
         // 定义一个返回对象Map集
         HashMap<Object, Object> returnInfo = new HashMap<>();
         // 判断Userinfo是否为空
-        if(userInfo!=null){
-            // 不为空则创建token
-            String token = JwtUtils.generateToken(userInfo);
-            HashMap<Object, Object> webMap = new HashMap<>();
-            webMap.put("id",userInfo.getId());
-            webMap.put("username",userInfo.getUsername());
-            webMap.put("email",userInfo.getEmail());
-            webMap.put("roleType",userInfo.getRoleType());
-            webMap.put("token",token);
+        if (userInfo != null) {
+            if (userInfo.getPassword() != null) {
+                if (userInfo.getPassword().equals(SecureUtil.md5(password + userInfo.getSalt()))) {
+                    String token = JwtUtils.generateToken(userInfo);
+                    HashMap<Object, Object> map = new HashMap<>();
+                    map.put("id", userInfo.getId());
+                    map.put("username", userInfo.getUsername());
+                    map.put("email", userInfo.getEmail());
+                    map.put("roleType", userInfo.getRoleType());
+                    map.put("token", token);
             // 菜单权限
-            returnInfo.put("userInfo",webMap);
-            returnInfo.put("menuList","");
-            return Result.success(returnInfo);
-        }else{
-            return Result.error("请检查用户名密码是否正确");
+                    returnInfo.put("userInfo", map);
+                    returnInfo.put("menuList", "");
+                    return Result.success(map);
+                }
+
+            }
+
         }
+        return Result.error("请检查用户名密码是否正确");
     }
 }

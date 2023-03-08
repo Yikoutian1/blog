@@ -1,42 +1,33 @@
 package com.project.blog.interceptor;
 
 import cn.hutool.jwt.Claims;
+import com.project.blog.entity.User;
+import com.project.blog.enums.RoleType;
 import com.project.blog.exception.CustomException;
+import com.project.blog.serviceImpl.UserServiceImpl;
 import com.project.blog.utils.JwtUtils;
+import com.project.blog.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @ClassName LoginInterceptor
- * @Description 编写拦截器
- * @Author QiuLiHang
- * @DATE 2023/3/5 19:56
- * @Version 1.0
- */
-
 @Component
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
 
-    /**
-     * 拦截器前置处理
-     *
-     * @param request
-     * @param response
-     * @param handler
-     * @return
-     * @throws Exception
-     */
+    @Autowired
+    private UserServiceImpl userService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 打印请求信息
         log.info("------------- LoginInterceptor 开始 -------------");
-        long startTime = System.currentTimeMillis();// 开启时间
+        long startTime = System.currentTimeMillis();
         request.setAttribute("requestStartTime", startTime);
 
         // OPTIONS请求不做校验,
@@ -57,16 +48,30 @@ public class LoginInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        // 校验
+
         Claims claims = JwtUtils.verifyJwt(token);
         //获取用户ID
         if (claims == null) {
             log.warn( "token无效，请求被拦截" );
             throw new CustomException(401,"token无效，请求被拦截");
         } else {
-            Integer userId = (Integer)claims.getClaim("userId");
-            log.info("已登录：{}", userId);
 
+            Boolean admin = Utils.isAdmin(path);
+            if(admin){
+                //判断当前访问的用户是否是超级管理员权限
+                Integer userId = (Integer)claims.getClaim("userId");
+                log.info("已登录用户ID：{}", userId);
+                User userInfo = userService.getById(userId);
+                if(userInfo != null){
+                    if (!RoleType.ROLE_ADMIN.equals(userInfo.getRoleType())) {
+                        log.warn( "接口无权限访问" );
+                        throw new CustomException(401,"接口无权限访问");
+                    }
+                }else {
+                    log.warn( "用户未找到" );
+                    throw new CustomException(401,"用户未找到");
+                }
+            }
             return true;
         }
     }
