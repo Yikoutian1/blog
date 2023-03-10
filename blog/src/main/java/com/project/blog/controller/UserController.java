@@ -121,38 +121,30 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/login")
-    public Result<?> login(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password){
+    public Result<?> login(@RequestParam("username") String username, @RequestParam("password") String password) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        //md5(password+salt) = 数据库存的password值
-        //通过用户名查询用户
         wrapper.eq(User::getUsername, username)
+                .eq(User::getPassword, password)
                 .last("limit 1");
-                // 表示查询的只有sql一条数据,因为在查询的时候也许会有多条语句,如果有多条则会出现错误
         User userInfo = userService.getOne(wrapper);
-        // 定义一个返回对象Map集
+
         HashMap<Object, Object> returnInfo = new HashMap<>();
-        // 判断Userinfo是否为空
+
         if (userInfo != null) {
-            if (userInfo.getPassword() != null) {
-                if (userInfo.getPassword().equals(SecureUtil.md5(password + userInfo.getSalt()))) {
-                    String token = JwtUtils.generateToken(userInfo);
-                    HashMap<Object, Object> map = new HashMap<>();
-                    map.put("id", userInfo.getId());
-                    map.put("username", userInfo.getUsername());
-                    map.put("email", userInfo.getEmail());
-                    map.put("roleType", userInfo.getRoleType());
-                    map.put("token", token);
-            // 菜单权限
-                    returnInfo.put("userInfo", map);
-                    returnInfo.put("menuList", "");
-                    return Result.success(map);
-                }
+            String token = JwtUtils.generateToken(userInfo);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("id", userInfo.getId());
+            map.put("username", userInfo.getUsername());
+            map.put("email", userInfo.getEmail());
+            map.put("roleType", userInfo.getRoleType());
+            map.put("token", token);
 
-            }
-
+            returnInfo.put("userInfo", map);
+            returnInfo.put("menuList", "");
+            return Result.success(map);
+        } else {
+            return Result.error("请检查用户名密码是否正确");
         }
-        return Result.error("请检查用户名密码是否正确");
+
     }
 }

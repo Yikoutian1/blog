@@ -5,7 +5,7 @@ import cn.hutool.crypto.SecureUtil;
 import java.util.Random;
 
 public class Utils {
-    //定义超级管理员可以访问的接口
+    /**定义超级管理员可以访问的接口*/
     private final static String[] adminUrlList = {
             "/article/delBatch",
             "/article/save",
