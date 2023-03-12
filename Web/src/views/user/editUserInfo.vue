@@ -15,7 +15,13 @@
                           placeholder="用户名"
                 ></el-input>
             </el-form-item>
-
+          <el-form-item prop="password">
+            <el-input type="text"
+                      v-model="formData.password"
+                      auto-complete="off"
+                      placeholder="密码"
+            ></el-input>
+          </el-form-item>
             <el-form-item prop="email">
                 <el-input type="text"
                           v-model="formData.email"
@@ -57,6 +63,7 @@
                 formData: {
                     id:"",
                     username: '',
+                    password: '',
                     email: '',
                     mobile: '',
                     address: '',

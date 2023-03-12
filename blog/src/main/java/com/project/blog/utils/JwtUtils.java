@@ -1,7 +1,7 @@
 package com.project.blog.utils;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.jwt.Claims;
+import io.jsonwebtoken.Claims;
 import com.project.blog.entity.User;
 import com.project.blog.serviceImpl.UserServiceImpl;
 
@@ -75,7 +75,7 @@ public class JwtUtils {
         SecretKey key = generalKey();
         Claims claims;
         try {
-            claims = (Claims) Jwts.parser()  //得到DefaultJwtParser
+            claims = Jwts.parser()  //得到DefaultJwtParser
                     .setSigningKey(key)         //设置签名的秘钥
                     .parseClaimsJws(token).getBody();
         } catch (Exception e) {
@@ -127,7 +127,7 @@ public class JwtUtils {
 
                 Claims claims = verifyJwt(token);
                 if (claims != null) {
-                    Integer userId = (Integer) claims.getClaim("userId");
+                    Integer userId = (Integer) claims.get("userId");
 
                     return userId;
                 } else {
@@ -150,7 +150,7 @@ public class JwtUtils {
         Claims claims = verifyJwt(token);
 
         if (claims != null) {
-            return (Integer) claims.getClaim("id");
+            return (Integer) claims.get("id");
         } else {
             return 0;
         }

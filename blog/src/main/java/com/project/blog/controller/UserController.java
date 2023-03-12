@@ -120,6 +120,53 @@ public class UserController extends BaseController {
         return Result.success();
     }
 
+    /**
+     *  md5 salt加密的注册
+     * @param username
+     * @param password
+     * @return
+     */
+
+    @GetMapping("/login")
+    public Result<?> login(@RequestParam("username") String username, @RequestParam("password") String password) {
+
+        // md5(password+salt) = 数据库存的password值
+        // 通过用户名查询用户
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, username)
+                .last("limit 1");
+        User userInfo = userService.getOne(wrapper);
+        HashMap<Object, Object> returnInfo = new HashMap<>();
+        if (userInfo != null) {
+            if (userInfo.getPassword() != null) {
+                if (userInfo.getPassword().equals(SecureUtil.md5(password + userInfo.getSalt()))) {
+                    String token = JwtUtils.generateToken(userInfo);
+                    HashMap<Object, Object> map = new HashMap<>();
+                    map.put("id", userInfo.getId());
+                    map.put("username", userInfo.getUsername());
+                    map.put("email", userInfo.getEmail());
+                    map.put("roleType", userInfo.getRoleType());
+                    map.put("token", token);
+                    returnInfo.put("userInfo", map);
+                    returnInfo.put("menuList", "");
+                    return Result.success(map);
+                }
+
+            }
+
+        }
+        return Result.error("请检查用户名密码是否正确");
+    }
+
+
+
+    /**
+     *  没有进行md5 salt加密的注册
+     * @param username
+     * @param password
+     * @return
+     */
+/*
     @GetMapping("/login")
     public Result<?> login(@RequestParam("username") String username, @RequestParam("password") String password) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
@@ -147,4 +194,9 @@ public class UserController extends BaseController {
         }
 
     }
+*/
+
+
+
+
 }

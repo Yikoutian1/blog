@@ -71,8 +71,6 @@ const routes = [
         name: 'EditUserInfo',
         component: () => import('../views/user/editUserInfo.vue')
       },
-
-
     ]
   },
 ]

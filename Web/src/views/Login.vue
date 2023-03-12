@@ -7,22 +7,6 @@
              label-width="0px"
              class="demo-ruleForm login-page">
       <h3 class="title">用户登录</h3>
-      <!--      <div class="photo" >-->
-      <!--        <div>-->
-      <!--          <el-image-->
-      <!--              style="width: 150px; height: 150px"-->
-      <!--              :src="wx"-->
-      <!--              fit="fill"></el-image>-->
-      <!--          <p>微信公众号</p>-->
-      <!--        </div>-->
-      <!--        <div>-->
-      <!--          <el-image-->
-      <!--              style="width: 150px; height: 150px"-->
-      <!--              :src="qqGroup"-->
-      <!--              fit="fill"></el-image>-->
-      <!--          <p>QQ群</p>-->
-      <!--        </div>-->
-      <!--      </div>-->
       <el-form-item prop="username">
         <el-input type="text"
                   v-model="formData.username"
@@ -37,10 +21,10 @@
                   placeholder="密码"
         ></el-input>
       </el-form-item>
-      <!--      <el-checkbox
+      <el-checkbox
                 v-model="checked"
                 class="rememberme"
-            >记住密码</el-checkbox>-->
+            >记住密码</el-checkbox>
       <el-form-item style="width:100%;">
         <el-button type="primary" style="width:100%;" :loading="logining" @click="handleSubmit">登录</el-button>
       </el-form-item>

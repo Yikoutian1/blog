@@ -7,29 +7,13 @@
              label-width="0px"
              class="demo-ruleForm login-page">
       <h3 class="title">用户注册</h3>
-<!--      <div class="photo" >-->
-<!--        <div>-->
-<!--          <el-image-->
-<!--              style="width: 150px; height: 150px"-->
-<!--              :src="wx"-->
-<!--              fit="fill"></el-image>-->
-<!--          <p>微信公众号</p>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--          <el-image-->
-<!--              style="width: 150px; height: 150px"-->
-<!--              :src="qqGroup"-->
-<!--              fit="fill"></el-image>-->
-<!--          <p>QQ群</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <el-form-item prop="username">
+      <el-form-item prop="username">
         <el-input type="text"
                   v-model="formData.username"
                   auto-complete="off"
                   placeholder="用户登录名"
         ></el-input>
-      </el-form-item>-->
+      </el-form-item>
       <el-form-item prop="username">
         <el-input type="text"
                   v-model="formData.username"
@@ -44,10 +28,10 @@
                   placeholder="密码"
         ></el-input>
       </el-form-item>
-      <!--      <el-checkbox
-                v-model="checked"
-                class="rememberme"
-            >记住密码</el-checkbox>-->
+<!--      <el-checkbox-->
+<!--                v-model="checked"-->
+<!--                class="rememberme"-->
+<!--            >记住密码</el-checkbox>-->
       <el-form-item style="width:100%;">
         <el-button type="primary" style="width:100%;" :loading="logining" @click="handleSubmit">注册</el-button>
       </el-form-item>
@@ -66,8 +50,6 @@
 export default {
   data() {
     return {
-      // qqGroup: require("../assets/qqGroup.png"),
-      // wx: require("../assets/wx.jpg"),
       logining: false,
       formData: {
         username: 'test',

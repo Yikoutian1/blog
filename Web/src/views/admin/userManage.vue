@@ -97,7 +97,6 @@
                     <el-input v-model="formData.username"></el-input>
                 </el-form-item>
                 <el-form-item label="座右铭" prop="motto">
-
                     <el-input
                             type="textarea"
                             :rows="3"

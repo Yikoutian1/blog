@@ -1,12 +1,12 @@
 package com.project.blog.interceptor;
 
-import cn.hutool.jwt.Claims;
 import com.project.blog.entity.User;
 import com.project.blog.enums.RoleType;
 import com.project.blog.exception.CustomException;
 import com.project.blog.serviceImpl.UserServiceImpl;
 import com.project.blog.utils.JwtUtils;
 import com.project.blog.utils.Utils;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Component
 @Slf4j
@@ -59,7 +60,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             Boolean admin = Utils.isAdmin(path);
             if(admin){
                 //判断当前访问的用户是否是超级管理员权限
-                Integer userId = (Integer)claims.getClaim("userId");
+                Integer userId = (Integer)claims.get("userId");
                 log.info("已登录用户ID：{}", userId);
                 User userInfo = userService.getById(userId);
                 if(userInfo != null){

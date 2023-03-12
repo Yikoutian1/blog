@@ -71,16 +71,11 @@ const create = {
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
             this.pageInfo.pageNum = val
-
             /*
                         https://blog.csdn.net/guxin_duyin/article/details/88916106
-
                         Object.assign(target, ...sources)
-
                         参数：target--->目标对象
-
                         source--->源对象
-
                         返回值：target，即目标对象*/
             this.searchMerge = Object.assign(this.pageInfo, this.searchParams)
             console.log(this.searchMerge)

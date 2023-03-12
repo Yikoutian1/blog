@@ -16,23 +16,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SpringMvcConfig implements WebMvcConfigurer {
-    /**
-     * 拦截器的注入
-     */
+
     @Resource
     LoginInterceptor loginInterceptor;
 
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                // 所有的请求
                 .addPathPatterns("/**")
-                // 允许直接访问的接口
+                //允许直接访问的接口
                 .excludePathPatterns(
-                        // 开放的api端口
                         "/user/login",
+                        "/user/save",
                         "/article/page",
                         "/article/detail",
-                        // swagger,接口
+
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/swagger-resources/**",
@@ -40,7 +37,8 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                         "/webjars/**",
                         "/v2/api-docs",
                         "/configuration/ui",
-                        "/configuration/security"
+                        "/configuration/security",
+                        "/user/register"
 
                 );
 
